@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&display=swap');
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  
+  background-image: url('https://i.pinimg.com/1200x/8f/13/10/8f1310e23e12f559bbe727d64439c9ec.jpg');
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Mountains of Christmas", serif;
+}
+
+.app {
+  width: min(640px, 94vw, calc((100vh - 40px) / 1.37));
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  filter: drop-shadow(0 12px 16px rgba(0, 0, 0, 0.3));
+}
+
+/* ---------- main chat window ---------- */
+.chat-window {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1400 / 1215;
+  background: url("digicom/panel.PNG") center / 100% 100% no-repeat;
+  image-rendering: pixelated;
+}
+
+.heart-btn {
+  position: absolute;
+  left: 41%;
+  top: 1.8%;
+  width: 14%;
+}
+
+.send-btn {
+  position: absolute;
+  left: 13.2%;
+  top: 86.8%;
+  width: 20.4%;
+}
+
+.heart-btn, .send-btn {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+.heart-btn img, .send-btn img { width: 100%; display: block; image-rendering: pixelated; }
+.heart-btn:active, .send-btn:active { transform: scale(0.92); }
+
+/* ---------- messages ---------- */
+#messages {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  top: 21%;
+  bottom: 14%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  scrollbar-width: none;
+}
+#messages::-webkit-scrollbar { display: none; }
+
+.bubble {
+  max-width: 78%;
+  min-width: 90px;
+  padding: 3.5cqw 4.5cqw;
+  font-size: 4cqw;
+  color: #7a3b63;
+  overflow-wrap: anywhere;
+  background-image: url("digicom/bubbles.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+.bubble.received { align-self: flex-start; }
+.bubble.sent     { align-self: flex-end; }
+
+/* ---------- input board ---------- */
+.input-panel {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1300 / 620;
+  background: url("digicom/board.png") center / 100% 100% no-repeat;
+}
+
+#input {
+  position: absolute;
+  left: 6%;
+  top: 30%;
+  width: 88%;
+  height: 56%;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  resize: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 4.4cqw;
+  line-height: 1.2;
+  color: #7a3b63;
+}
+#input::placeholder { color: #d97bb6; }

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cadillac</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+
+  <div class="chat-window">
+    <button class="heart-btn" onclick="playsound()" aria-label="Play sound">
+      <img src="digicom/charm.png" alt="">
+    </button>
+
+    <div id="messages"></div>
+
+    <button class="send-btn" onclick="send()" aria-label="Send">
+      <img src="digicom/button.png" alt="">
+    </button>
+  </div>
+
+  <div class="input-panel">
+    <textarea id="input" placeholder="type here..."></textarea>
+  </div>
+
+</div>
+
+<script>
+const ws = new WebSocket('ws://localhost:8080');
+const messagesDiv = document.getElementById('messages');
+const input = document.getElementById('input');
+
+function addBubble(text, type) {
+  const el = document.createElement('div');
+  el.className = 'bubble ' + type;
+  el.textContent = text;
+  messagesDiv.appendChild(el);
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+ws.onmessage = (event) => addBubble(event.data, 'received');
+ws.onclose = () => addBubble("Oops! Can't reach", 'received');
+
+function send() {
+  const text = input.value.trim();
+  if (!text || ws.readyState !== WebSocket.OPEN) return;
+  ws.send(text);
+  addBubble(text, 'sent');
+  input.value = '';
+}
+
+input.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    send();
+  }
+});
+
+
+function playsound() {
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  [784, 988, 1175, 1568].forEach((freq, i) => {
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = 'triangle';
+    o.frequency.value = freq;
+    const t = ctx.currentTime + i * 0.1;
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.25, t + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.5);
+    o.connect(g).connect(ctx.destination);
+    o.start(t);
+    o.stop(t + 0.5);
+  });
+}
+</script>
+</body>
+</html>
